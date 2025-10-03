@@ -1,4 +1,4 @@
-from aggregator import Aggregator
+from core.aggregator import Aggregator
 
 agg = Aggregator()
 

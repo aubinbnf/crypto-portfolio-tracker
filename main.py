@@ -1,15 +1,18 @@
 from fastapi import FastAPI
-from aggregator import Aggregator
+from typing import List
+from core.aggregator import Aggregator
+from core.models import Balance, TotalsResponse
 
+# python -m uvicorn main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 agg = Aggregator()
 
-@app.get("/balances")
+@app.get("/balances", response_model=List[Balance])
 def get_balances():
     balances = agg.get_all_balances()
-    return {"balances": balances}
+    return balances
 
-@app.get("/totals")
+@app.get("/totals", response_model=TotalsResponse)
 def get_totals():
     balances = agg.get_all_balances()
     totals = agg.aggregate_by_asset(balances)
