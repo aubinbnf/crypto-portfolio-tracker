@@ -15,7 +15,7 @@ class EtherscanConnector(Connector):
 
     def fetch_balances(self):
         r = requests.get(
-            "https://api.etherscan.io/api",
+            "https://api.etherscan.io/v2/api?chainid=1",
             params={
                 "module": "account",
                 "action": "balance",
