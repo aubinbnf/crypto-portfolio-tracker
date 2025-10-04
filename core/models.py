@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from datetime import datetime
 from typing import Optional, List
 
 class Balance(BaseModel):
@@ -18,3 +19,18 @@ class Totals(BaseModel):
 class TotalsResponse(BaseModel):
     totals: List[Totals]
     total_usd: float
+
+class SnapshotItemModel(BaseModel):
+    asset: str
+    balance: float | None = Field(default=0.0)
+    value_usd: float | None = None
+    source: str | None = None
+    chain: str | None = None
+
+class SnapshotModel(BaseModel):
+    id: int
+    fetched_at: datetime
+    items: List[SnapshotItemModel]
+
+    class Config:
+        orm_mode = True
