@@ -1,6 +1,6 @@
-from db import SessionLocal
-from repositories.snapshot_repository import SnapshotRepository
-from core.aggregator import Aggregator
+from app.models import SessionLocal
+from app.repositories import SnapshotRepository
+from app.services import Aggregator
 
 class PortfolioService:
     def __init__(self):

@@ -1,7 +1,7 @@
 import os, requests
 from dotenv import load_dotenv
 from datetime import datetime
-from connectors.base import Connector  # si tu as déjà défini une base abstraite
+from app.connectors import Connector
 
 load_dotenv()
 

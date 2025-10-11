@@ -1,4 +1,4 @@
-from core.aggregator import Aggregator
+from app.services import Aggregator
 
 agg = Aggregator()
 

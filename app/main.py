@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 from typing import List
-from portfolio_service import PortfolioService
-from core.aggregator import Aggregator
-from core.models import Balance, TotalsResponse, SnapshotModel
+from app.services import PortfolioService, Aggregator
+from app.models import Balance, TotalsResponse, SnapshotModel
 
-# python -m uvicorn main:app --reload
+# python -m uvicorn app.main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 service = PortfolioService()
 agg = Aggregator()

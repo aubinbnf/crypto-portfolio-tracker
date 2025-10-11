@@ -1,12 +1,10 @@
 import requests
 import yaml
-from connectors.etherscan_connector import EtherscanConnector
-from connectors.blockstream_connector import BlockstreamConnector
-from connectors.binance_connector import BinanceConnector
+from app.connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector
 from collections import defaultdict
 
 class Aggregator:
-    def __init__(self, connectors=None, config_path="config/assets.yaml"):
+    def __init__(self, connectors=None, config_path="app/config/assets.yaml"):
         with open(config_path, "r") as f:
             self.asset_map = yaml.safe_load(f)
         
