@@ -5,7 +5,7 @@ from app.connectors import Connector
 
 load_dotenv()
 
-class EtherscanConnector(Connector):
+class ArbiscanConnector(Connector):
     def __init__(self, config_path="app/config/assets.yaml"):
         self.api_key = os.getenv("ETHERSCAN_API_KEY")
         self.addresses = os.getenv("ETH_ADDRESSES", "").split(",")

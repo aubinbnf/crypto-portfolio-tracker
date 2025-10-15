@@ -12,6 +12,7 @@ asset_map:
   EGLD: elrond-erd-2
   GRT: the-graph
   ETHW: ethereum-pow-iou
+  ENA: ethena
 
 # List of ERC-20 tokens to follow on Ethereum
 eth_tokens:
