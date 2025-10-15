@@ -1,4 +1,4 @@
-import os, requests
+import os, requests, yaml
 from dotenv import load_dotenv
 from datetime import datetime
 from app.connectors import Connector
@@ -6,12 +6,16 @@ from app.connectors import Connector
 load_dotenv()
 
 class EtherscanConnector(Connector):
-    def __init__(self):
+    def __init__(self, config_path="app/config/assets.yaml"):
         self.api_key = os.getenv("ETHERSCAN_API_KEY")
         self.addresses = os.getenv("ETH_ADDRESSES", "").split(",")
 
         if not self.api_key or not self.addresses:
             raise ValueError("ETHERSCAN_API_KEY or ETH_ADDRESSES is missing")
+        
+        with open(config_path, "r") as f:
+            self.config = yaml.safe_load(f)
+        self.tokens = self.config.get("eth_tokens", {})
 
     def fetch_balances(self):
         balances = []
@@ -19,7 +23,9 @@ class EtherscanConnector(Connector):
             address = address.strip()
             if not address:
                 continue
-            r = requests.get(
+
+            # ETH balance
+            eth_resp = requests.get(
                 "https://api.etherscan.io/v2/api?chainid=1",
                 params={
                     "module": "account",
@@ -30,8 +36,8 @@ class EtherscanConnector(Connector):
                 },
                 timeout=10
             )
-            r.raise_for_status()
-            data = r.json()
+            eth_resp.raise_for_status()
+            data = eth_resp.json()
             wei = int(data["result"])
             eth = wei / 10**18
 
@@ -43,5 +49,37 @@ class EtherscanConnector(Connector):
                 "address": address,
                 "fetched_at": datetime.utcnow().isoformat()
             })
-            
+
+            #ERC-20 token balances
+            for symbol, contract in self.tokens.items():
+                print(symbol)
+                token_resp = requests.get(
+                    "https://api.etherscan.io/v2/api?chainid=1",
+                    params={
+                        "module": "account",
+                        "action": "tokenbalance",
+                        "contractaddress": contract,
+                        "address": address,
+                        "tag": "latest",
+                        "apikey": self.api_key
+                    },
+                    timeout=10
+                )
+                token_resp.raise_for_status()
+                token_data = token_resp.json()
+                print(token_data)
+                if token_data.get("status") == "1":
+                    raw_balance = int(token_data["result"])
+                    decimals = 6 if symbol in ("USDT", "USDC") else 18
+                    balance = raw_balance / (10 ** decimals)
+                    
+                    if balance > 0:
+                        balances.append({
+                            "source": "etherscan",
+                            "chain": "ethereum",
+                            "asset": symbol,
+                            "balance": balance,
+                            "address": address,
+                            "fetched_at": datetime.utcnow().isoformat()
+                        })            
         return balances

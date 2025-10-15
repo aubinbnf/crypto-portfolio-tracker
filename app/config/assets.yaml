@@ -1,12 +1,18 @@
-BTC: bitcoin
-ETH: ethereum
-USDT: tether
-BNB: binancecoin
-ADA: cardano
-SOL: solana
-ETC: ethereum-classic
-USDC: usd-coin
-DOT: polkadot
-EGLD: elrond-erd-2
-GRT: the-graph
-ETHW: ethereum-pow-iou
+# Main mapping: symbol → id CoinGecko
+asset_map:
+  BTC: bitcoin
+  ETH: ethereum
+  USDT: tether
+  BNB: binancecoin
+  ADA: cardano
+  SOL: solana
+  ETC: ethereum-classic
+  USDC: usd-coin
+  DOT: polkadot
+  EGLD: elrond-erd-2
+  GRT: the-graph
+  ETHW: ethereum-pow-iou
+
+# List of ERC-20 tokens to follow on Ethereum
+eth_tokens:
+  USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7"

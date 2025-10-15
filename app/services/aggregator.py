@@ -6,7 +6,8 @@ from collections import defaultdict
 class Aggregator:
     def __init__(self, connectors=None, config_path="app/config/assets.yaml"):
         with open(config_path, "r") as f:
-            self.asset_map = yaml.safe_load(f)
+            self.config = yaml.safe_load(f)
+        self.asset_map = self.config.get("asset_map", {})
         
         self.connectors = connectors or [
             EtherscanConnector(),
