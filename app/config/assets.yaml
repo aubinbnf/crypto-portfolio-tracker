@@ -17,3 +17,10 @@ asset_map:
 # List of ERC-20 tokens to follow on Ethereum
 eth_tokens:
   USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+  USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+  USDHL: "0xb50A96253aBDF803D85efcDce07Ad8becBc52BD5"
+
+blockchain_id:
+  ethereum_mainnet: 1
+  arbitrum_one_mainnet: 42161
+  hyperevm_mainnet: 999
