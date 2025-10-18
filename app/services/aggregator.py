@@ -1,6 +1,6 @@
 import requests
 import yaml
-from app.connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector
+from app.connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector, CoinGeckoConnector
 from collections import defaultdict
 
 class Aggregator:
@@ -14,6 +14,8 @@ class Aggregator:
             BlockstreamConnector(),
             BinanceConnector()
         ]
+
+        self.coingecko = CoinGeckoConnector()
 
     def get_all_balances(self):
         balances = []
@@ -33,10 +35,8 @@ class Aggregator:
 
     def fetch_prices(self, assets, vs="usd"):
         ids = [self.asset_map[a] for a in assets if a in self.asset_map]
-        url = "https://api.coingecko.com/api/v3/simple/price"
-        r = requests.get(url, params={"ids": ",".join(ids), "vs_currencies": vs}, timeout=10)
-        r.raise_for_status()
-        return r.json()
+        price = self.coingecko.get_price(ids, vs)
+        return price
 
     def add_usd_values(self, totals):
         assets = [t["asset"] for t in totals]
