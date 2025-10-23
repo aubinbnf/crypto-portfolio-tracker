@@ -12,7 +12,7 @@ class Balance(BaseModel):
 
 class Totals(BaseModel):
     asset: str
-    total_balance: float
+    balance: float
     price_usd: Optional[float] = None
     value_usd: Optional[float] = None
 

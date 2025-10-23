@@ -1,23 +1,22 @@
 from fastapi import FastAPI
 from typing import List
-from app.services import PortfolioService, Aggregator
+from app.services import PortfolioService
 from app.models import Balance, TotalsResponse, SnapshotModel
 
 # python -m uvicorn app.main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 service = PortfolioService()
-agg = Aggregator()
 
 @app.get("/balances", response_model=List[Balance])
 def get_balances():
-    balances = agg.get_all_balances()
+    balances = service.get_all_balances()
     return balances
 
 @app.get("/totals", response_model=TotalsResponse)
 def get_totals():
-    balances = agg.get_all_balances()
-    totals = agg.aggregate_by_asset(balances)
-    totals = agg.add_usd_values(totals)
+    balances = service.get_all_balances()
+    totals = service.aggregate_by_asset(balances)
+    totals = service.add_usd_values(totals)
     total_usd = sum(t["value_usd"] for t in totals if t["value_usd"])
     return {"totals": totals, "total_usd": total_usd}
 

@@ -12,7 +12,6 @@ class SnapshotRepository:
             fetched_at=datetime.utcnow(),
             meta=json.dumps(meta or {})
         )
-
         for b in balances:
             item = SnapshotItem(
                 source=b.get("source"),
