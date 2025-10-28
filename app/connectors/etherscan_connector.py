@@ -6,33 +6,47 @@ from app.connectors import Connector
 load_dotenv()
 
 class EtherscanConnector(Connector):
-    def __init__(self, config_path="app/config/assets.yaml"):
+    def __init__(self, wallets_config="app/config/wallets.yaml", assets_path="app/config/assets.yaml"):
         self.api_key = os.getenv("ETHERSCAN_API_KEY")
-        self.addresses = [a.strip() for a in os.getenv("ETH_ADDRESSES", "").split(",") if a.strip()]
+        #self.addresses = [a.strip() for a in os.getenv("ETH_ADDRESSES", "").split(",") if a.strip()]
         self.base_url = "https://api.etherscan.io/v2/api"
-        if not self.api_key or not self.addresses:
-            raise ValueError("ETHERSCAN_API_KEY or ETH_ADDRESSES is missing")
+        #if not self.api_key or not self.addresses:
+        #    raise ValueError("ETHERSCAN_API_KEY or ETH_ADDRESSES is missing")
         
-        with open(config_path, "r") as f:
-            self.config = yaml.safe_load(f)
-        self.tokens = self.config.get("eth_tokens", {})
+        with open(assets_path, "r") as f:
+            self.assets_config = yaml.safe_load(f)
+
+        with open(wallets_config, "r") as f:
+            self.wallets_data = yaml.safe_load(f)["wallets"]
+        #self.tokens = self.config.get("eth_tokens", {})
 
     def fetch_balances(self):
-        """Retrieves the ETH + ERC20 balance for each address"""
+        """Retrieves balance for each address"""
         all_balances = []
-        for address in self.addresses:
-            eth_balance = self._get_native_balance(address)
-            all_balances.append(eth_balance)
+        for chain_name, chain_conf in self.wallets_data.items():
+            print(f"🔗 Fetching balances on {chain_name}...")
 
-            token_balances = self._get_token_balances(address)
-            all_balances.extend(token_balances)
+            chain_id = chain_conf["chain_id"]
+
+            for addr_info in chain_conf["addresses"]:
+                address = addr_info["address"]
+                tokens = addr_info.get("tokens", [])
+                for token in tokens:
+                    for key, value in token.items():
+                        if value == "native token": 
+                            print("NATIVE")
+                            all_balances.append(self._get_native_balance(address, chain_name, chain_id, key))
+                            print(all_balances)
+                        else: 
+                            print(f"key : {key} and value : {value}\n")
+                            all_balances.append(self._get_token_balances(address, chain_name, chain_id, value, key))
 
         return all_balances
     
-    def _get_native_balance(self, address):
-        """Retrieves ETH balance"""
+    def _get_native_balance(self, address, chain_name, chain_id, symbol):
+        """Retrieves native balance"""
         resp = self._request({
-            "chainid": 1,
+            "chainid": chain_id,
             "module": "account",
             "action": "balance",
             "address": address,
@@ -40,27 +54,23 @@ class EtherscanConnector(Connector):
         })
         wei = int(resp.get("result", 0))
         eth = wei / 10**18
-        return self._format_balance("ethereum", "ETH", eth, address)
+        return self._format_balance(chain_name, symbol, eth, address)
 
-    def _get_token_balances(self, address):
+    def _get_token_balances(self, address, chain_name, chain_id, contract, symbol):
         """Retrieves ERC-20 balances for configured tokens"""
-        balances = []
-        for symbol, contract in self.tokens.items():
-            resp = self._request({
-                "chainid": 1,
-                "module": "account",
-                "action": "tokenbalance",
-                "contractaddress": contract,
-                "address": address,
-                "tag": "latest"
-            })
-            if resp.get("status") == "1":
-                raw_balance = int(resp.get("result", 0))
-                decimals = self._guess_decimals(symbol)
-                balance = raw_balance / (10 ** decimals)
-                if balance > 0:
-                    balances.append(self._format_balance("ethereum", symbol, balance, address))
-        return balances
+        resp = self._request({
+            "chainid": chain_id,
+            "module": "account",
+            "action": "tokenbalance",
+            "contractaddress": contract,
+            "address": address,
+            "tag": "latest"
+        })
+        if resp.get("status") == "1":
+            raw_balance = int(resp.get("result", 0))
+            decimals = self._guess_decimals(symbol)
+            balance = raw_balance / (10 ** decimals)
+        return self._format_balance(chain_name, symbol, balance, address)
 
     def _request(self, params):
         """Manages API calls to Etherscan"""

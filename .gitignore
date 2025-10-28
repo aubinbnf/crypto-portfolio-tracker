@@ -7,3 +7,5 @@
 __pycache__/
 *.pyc
 tests/test_web3.py
+
+*wallets.yaml
