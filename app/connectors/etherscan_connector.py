@@ -34,11 +34,9 @@ class EtherscanConnector(Connector):
                 for token in tokens:
                     for key, value in token.items():
                         if value == "native token": 
-                            print("NATIVE")
                             all_balances.append(self._get_native_balance(address, chain_name, chain_id, key))
                             print(all_balances)
                         else: 
-                            print(f"key : {key} and value : {value}\n")
                             all_balances.append(self._get_token_balances(address, chain_name, chain_id, value, key))
 
         return all_balances
