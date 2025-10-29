@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   crypto-tracker:
     build: .
@@ -6,3 +7,9 @@ services:
       - "8000:8000"
     environment:
       - ENV=development
+    volumes:
+      - portfolio-data:/app/data
+
+volumes:
+  portfolio-data:
+    driver: local
