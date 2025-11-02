@@ -2,9 +2,20 @@ from fastapi import FastAPI
 from typing import List
 from app.services import PortfolioService
 from app.models import Balance, TotalsResponse, SnapshotModel
+from fastapi.middleware.cors import CORSMiddleware
 
 # python -m uvicorn app.main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
+
+# CORS Management
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 service = PortfolioService()
 
 @app.get("/balances", response_model=List[Balance])
