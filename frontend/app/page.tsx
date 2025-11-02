@@ -1,6 +1,7 @@
 import TestConnection from './components/TestConnection';
 import RawDataDisplay from './components/RawDataDisplay';
 import { useTotals } from './hooks/useTotals';
+import PortfolioPieChart from './components/PortfolioPieChart';
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
         
         <div className="space-y-4">
           <TestConnection />
-          <RawDataDisplay />
+          <PortfolioPieChart />
         </div>
       </div>
     </div>
