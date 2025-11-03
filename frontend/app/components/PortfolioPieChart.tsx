@@ -19,15 +19,14 @@ export default function PortfolioPieChart() {
 
   return (
     <div className="bg-white rounded-lg shadow border p-6">
-      <h3 className="text-lg font-semibold mb-4">Répartition du Portfolio</h3>
+      <h3 className="text-lg font-semibold mb-4">Portfolio Breakdown</h3>
       
       <div className="flex flex-col lg:flex-row items-center">
-        {/* Graphique avec Recharts */}
         <div className="w-full lg:w-1/2 h-64">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={chartData}
+                data={chartData as any}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -61,7 +60,6 @@ export default function PortfolioPieChart() {
           </ResponsiveContainer>
         </div>
 
-        {/* Légende simplifiée */}
         <div className="w-full lg:w-1/2 max-h-60 overflow-y-auto">
           <div className="space-y-2">
             {chartData.map((asset, index) => {
