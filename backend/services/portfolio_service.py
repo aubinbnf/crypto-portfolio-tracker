@@ -1,11 +1,11 @@
-from app.models import SessionLocal
-from app.repositories import SnapshotRepository
+from models import SessionLocal
+from repositories import SnapshotRepository
 import yaml
-from app.connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector, CoinGeckoConnector
+from connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector, CoinGeckoConnector
 from collections import defaultdict
 
 class PortfolioService:
-    def __init__(self, connectors=None, config_path="app/config/assets.yaml"):
+    def __init__(self, connectors=None, config_path="config/assets.yaml"):
         self.db = SessionLocal()
         self.repo = SnapshotRepository(self.db)
 

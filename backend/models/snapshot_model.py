@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.models import Base
+from models import Base
 
 class Snapshot(Base):
     __tablename__ = "snapshots"

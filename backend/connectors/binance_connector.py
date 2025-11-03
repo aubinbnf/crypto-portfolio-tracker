@@ -2,7 +2,7 @@ import os
 from binance.client import Client
 from dotenv import load_dotenv
 from datetime import datetime
-from app.connectors import Connector
+from connectors import Connector
 
 load_dotenv()
 

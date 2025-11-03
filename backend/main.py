@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from typing import List
-from app.services import PortfolioService
-from app.models import Balance, TotalsResponse, SnapshotModel
+from services import PortfolioService
+from models import Balance, TotalsResponse, SnapshotModel
 from fastapi.middleware.cors import CORSMiddleware
 
 # python -m uvicorn app.main:app --reload

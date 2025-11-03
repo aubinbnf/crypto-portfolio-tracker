@@ -1,12 +1,12 @@
 import os, requests, yaml
 from dotenv import load_dotenv
 from datetime import datetime
-from app.connectors import Connector
+from connectors import Connector
 
 load_dotenv()
 
 class EtherscanConnector(Connector):
-    def __init__(self, wallets_config="app/config/wallets.yaml", assets_path="app/config/assets.yaml"):
+    def __init__(self, wallets_config="config/wallets.yaml", assets_path="config/assets.yaml"):
         self.api_key = os.getenv("ETHERSCAN_API_KEY")
         #self.addresses = [a.strip() for a in os.getenv("ETH_ADDRESSES", "").split(",") if a.strip()]
         self.base_url = "https://api.etherscan.io/v2/api"

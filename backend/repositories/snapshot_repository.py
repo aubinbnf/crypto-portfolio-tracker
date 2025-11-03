@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
-from app.models import Snapshot, SnapshotItem
+from models import Snapshot, SnapshotItem
 import json
 
 class SnapshotRepository:
