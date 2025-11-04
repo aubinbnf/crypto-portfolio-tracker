@@ -1,6 +1,6 @@
 'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useTotals } from '../hooks/useTotals';
 
 export default function PortfolioPieChart() {
@@ -21,40 +21,27 @@ export default function PortfolioPieChart() {
     <div className="bg-white rounded-lg shadow border p-6">
       <h3 className="text-lg font-semibold mb-4">Portfolio Breakdown</h3>
       
-      <div className="flex flex-col lg:flex-row items-center">
-        <div className="w-full lg:w-1/2 h-64">
+      <div className="flex flex-col lg:flex-row items-center gap-4">
+        <div className="w-full lg:w-1/2 h-80 flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
+            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={chartData as any}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
+                innerRadius={70}
+                outerRadius={100}
                 paddingAngle={2}
                 dataKey="value_usd"
                 nameKey="asset"
               >
-                {chartData.map((entry, index) => (
+                {chartData.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                 ))}
               </Pie>
-              <Tooltip 
+              <Tooltip
                 formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Valeur']}
-              />
-              <Legend 
-                layout="vertical" 
-                verticalAlign="middle" 
-                align="right"
-                wrapperStyle={{
-                  paddingLeft: '20px',
-                  fontSize: '12px'
-                }}
-                formatter={(value, entry, index) => (
-                  <span style={{ color: '#374151' }}>
-                    {value} (${chartData[index]?.value_usd.toLocaleString()})
-                  </span>
-                )}
+                contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb' }}
               />
             </PieChart>
           </ResponsiveContainer>
