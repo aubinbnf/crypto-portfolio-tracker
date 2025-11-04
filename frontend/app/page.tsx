@@ -15,10 +15,10 @@ export default function Home() {
   const { data: snapshotData, loading: snapshotLoading, createSnapshot } = useSnapshot();
 
   const handleRefresh = async () => {
-    await Promise.all([
-      refetchTotals(),
-      createSnapshot()
-    ]);
+    // Create snapshot (fetches fresh data from APIs and saves to DB)
+    await createSnapshot();
+    // Then reload totals from the freshly updated cache
+    await refetchTotals();
   };
 
   const isLoading = totalsLoading && !totalsData;

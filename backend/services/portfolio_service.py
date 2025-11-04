@@ -79,7 +79,6 @@ class PortfolioService:
         if not snapshot:
             return None
         items = self.repo.get_items_for_snapshot(snapshot.id)
-        print(items[0].asset)
         return {
             "id": snapshot.id,
             "fetched_at": snapshot.fetched_at,
@@ -87,6 +86,7 @@ class PortfolioService:
                 {
                     "asset": i.asset,
                     "balance": i.balance,
+                    "price_usd": i.price_usd,
                     "value_usd": i.value_usd,
                     "source": i.source,
                     "chain": i.chain,
@@ -118,3 +118,46 @@ class PortfolioService:
                 ]
             })
         return result
+
+    def get_totals_from_cache(self):
+        """
+        Get aggregated totals from the latest snapshot in DB (fast, no API calls).
+        Returns same format as get_totals() for compatibility.
+        """
+        latest = self.get_latest_snapshot()
+
+        if not latest or not latest.get("items"):
+            return {"totals": [], "total_usd": 0}
+
+        # Aggregate by asset
+        asset_totals = defaultdict(lambda: {"balance": 0, "value_usd": 0, "price_usd": None})
+
+        for item in latest["items"]:
+            asset = item["asset"]
+            asset_totals[asset]["balance"] += item["balance"]
+
+            # Sum value_usd (handling None)
+            value = item.get("value_usd")
+            if value is not None:
+                asset_totals[asset]["value_usd"] += value
+
+            # Keep the price (assume same price for same asset)
+            price = item.get("price_usd")
+            if price is not None:
+                asset_totals[asset]["price_usd"] = price
+
+        # Convert to list format
+        totals = [
+            {
+                "asset": asset,
+                "balance": data["balance"],
+                "price_usd": data["price_usd"],
+                "value_usd": data["value_usd"] if data["value_usd"] > 0 else None
+            }
+            for asset, data in asset_totals.items()
+        ]
+
+        # Calculate total USD value
+        total_usd = sum(t["value_usd"] for t in totals if t["value_usd"])
+
+        return {"totals": totals, "total_usd": total_usd}

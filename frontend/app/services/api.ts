@@ -49,6 +49,18 @@ export const cryptoAPI = {
     return res.json();
   },
 
+  async getTotalsCached(): Promise<TotalsResponse> {
+    const res = await fetch(`${API_BASE_URL}/totals/cached`, {
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    return res.json();
+  },
+
   async getBalances(): Promise<Balance[]> {
     const res = await fetch(`${API_BASE_URL}/balances`, {
       cache: 'no-store'

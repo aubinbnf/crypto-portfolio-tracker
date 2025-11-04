@@ -9,8 +9,22 @@ export function useTotals() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadTotals();
+    // Load from cache on initial mount (fast)
+    loadTotalsFromCache();
   }, []);
+
+  const loadTotalsFromCache = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const totalsData = await cryptoAPI.getTotalsCached();
+      setData(totalsData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error has occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadTotals = async () => {
     try {
@@ -29,6 +43,6 @@ export function useTotals() {
     data,
     loading,
     error,
-    refetch: loadTotals
+    refetch: loadTotalsFromCache // Reload from cache (fast)
   };
 }

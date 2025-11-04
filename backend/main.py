@@ -31,9 +31,17 @@ def get_totals():
     total_usd = sum(t["value_usd"] for t in totals if t["value_usd"])
     return {"totals": totals, "total_usd": total_usd}
 
+@app.get("/totals/cached", response_model=TotalsResponse)
+def get_totals_cached():
+    """
+    Get totals from latest snapshot in DB (fast, no external API calls).
+    Use this for initial page load. Use POST /snapshots to refresh data.
+    """
+    return service.get_totals_from_cache()
+
 @app.post("/snapshots", response_model=SnapshotModel)
 def create_snapshot():
-    snapshot = service.create_snapshot()
+    service.create_snapshot()
     latest = service.get_latest_snapshot()
     return latest
 
