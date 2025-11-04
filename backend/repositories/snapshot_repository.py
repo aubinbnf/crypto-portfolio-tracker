@@ -33,5 +33,9 @@ class SnapshotRepository:
     def get_latest(self):
         return self.db.query(Snapshot).order_by(Snapshot.fetched_at.desc()).first()
 
+    def get_all(self, limit: int = 100):
+        """Get all snapshots ordered by date (most recent first)"""
+        return self.db.query(Snapshot).order_by(Snapshot.fetched_at.desc()).limit(limit).all()
+
     def get_items_for_snapshot(self, snapshot_id: int):
         return self.db.query(SnapshotItem).filter(SnapshotItem.snapshot_id == snapshot_id).all()

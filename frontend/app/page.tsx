@@ -5,6 +5,7 @@ import { useSnapshot } from './hooks/useSnapshot';
 import DashboardHeader from './components/DashboardHeader';
 import PortfolioStats from './components/PortfolioStats';
 import PortfolioPieChart from './components/PortfolioPieChart';
+import PortfolioHistoryChart from './components/PortfolioHistoryChart';
 import AssetTable from './components/AssetTable';
 import LoadingState from './components/LoadingState';
 import ErrorState from './components/ErrorState';
@@ -72,6 +73,10 @@ export default function Home() {
           totals={totalsData.totals}
           totalValue={totalsData.total_usd}
         />
+
+        <div className="mb-6">
+          <PortfolioHistoryChart />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <PortfolioPieChart />

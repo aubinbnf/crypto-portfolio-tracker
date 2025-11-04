@@ -84,5 +84,17 @@ export const cryptoAPI = {
     }
 
     return res.json();
+  },
+
+  async getAllSnapshots(limit: number = 30): Promise<Snapshot[]> {
+    const res = await fetch(`${API_BASE_URL}/snapshots?limit=${limit}`, {
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    return res.json();
   }
 };

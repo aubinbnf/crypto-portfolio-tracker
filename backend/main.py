@@ -44,6 +44,12 @@ def get_latest_snapshot():
         return {"id": 0, "fetched_at": None, "items": []}
     return latest
 
+@app.get("/snapshots", response_model=List[SnapshotModel])
+def get_all_snapshots(limit: int = 30):
+    """Get all snapshots history (limited to last 30 by default)"""
+    snapshots = service.get_all_snapshots(limit=limit)
+    return snapshots
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}

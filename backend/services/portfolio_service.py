@@ -83,3 +83,27 @@ class PortfolioService:
                 for i in items
             ]
         }
+
+    def get_all_snapshots(self, limit: int = 30):
+        """Get all snapshots with aggregated totals"""
+        snapshots = self.repo.get_all(limit=limit)
+        result = []
+        for snapshot in snapshots:
+            items = self.repo.get_items_for_snapshot(snapshot.id)
+            result.append({
+                "id": snapshot.id,
+                "fetched_at": snapshot.fetched_at,
+                "items": [
+                    {
+                        "asset": i.asset,
+                        "balance": i.balance,
+                        "value_usd": i.value_usd,
+                        "price_usd": i.price_usd,
+                        "source": i.source,
+                        "chain": i.chain,
+                        "address": i.address
+                    }
+                    for i in items
+                ]
+            })
+        return result
