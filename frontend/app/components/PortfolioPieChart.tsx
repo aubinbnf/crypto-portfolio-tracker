@@ -8,7 +8,10 @@ export default function PortfolioPieChart() {
 
   if (!data) return null;
 
-  const sorted = [...data.totals].sort((a, b) => b.value_usd - a.value_usd);
+  // Filter out items with null value_usd and then sort
+  const sorted = [...data.totals]
+    .filter(item => item.value_usd !== null)
+    .sort((a, b) => (b.value_usd || 0) - (a.value_usd || 0));
   const chartData = sorted.slice(0, 15);
 
   const colors = [

@@ -1,16 +1,23 @@
 #Back
-.venv/
+# Sensitive configuration files
 .env
+*wallets.yaml
+
+# Virtual environment
+.venv/
+
+# Database files
 data/
 *.db
 *.sqlite
 *.sqlite3
 
+# Python cache
 __pycache__/
 *.pyc
-tests/test_web3.py
 
-*wallets.yaml
+# Test files
+tests/test_web3.py
 
 #Front
 # Dependencies

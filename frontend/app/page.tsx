@@ -85,13 +85,16 @@ export default function Home() {
             <h3 className="text-lg font-semibold mb-4">Portfolio Distribution</h3>
             <div className="space-y-3">
               {totalsData.totals.slice(0, 10).map((asset, index) => {
-                const percentage = (asset.value_usd / totalsData.total_usd) * 100;
+                const percentage = asset.value_usd ? (asset.value_usd / totalsData.total_usd) * 100 : 0;
                 return (
                   <div key={asset.asset}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="font-medium text-gray-700">{asset.asset}</span>
                       <span className="text-gray-600">
-                        ${asset.value_usd.toLocaleString()} ({percentage.toFixed(1)}%)
+                        {asset.value_usd !== null
+                          ? `$${asset.value_usd.toLocaleString()} (${percentage.toFixed(1)}%)`
+                          : 'Price unavailable'
+                        }
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">

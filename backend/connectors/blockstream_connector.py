@@ -1,15 +1,25 @@
-import os, requests
+import requests
 from dotenv import load_dotenv
 from datetime import datetime
 from connectors import Connector
+from config.config_manager import ConfigManager
 
 load_dotenv()
 
+
 class BlockstreamConnector(Connector):
-    def __init__(self):
-        self.addresses = os.getenv("BTC_ADDRESSES", "").split(",")
+    def __init__(self, config_manager: ConfigManager = None):
+        """
+        Initialize Blockstream connector with ConfigManager
+
+        Args:
+            config_manager: ConfigManager instance (creates new one if None)
+        """
+        self.config = config_manager or ConfigManager()
+        self.addresses = self.config.get_user_addresses("bitcoin")
+
         if not self.addresses:
-            raise ValueError("BTC_ADDRESSES is missing")
+            print("⚠️  Warning: No Bitcoin addresses configured in wallets.yaml")
 
     def fetch_balances(self):
         balances = []

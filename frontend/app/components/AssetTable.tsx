@@ -152,7 +152,7 @@ export default function AssetTable({ totals, totalValue }: AssetTableProps) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedAndFilteredTotals.map((item) => {
-              const percentage = (item.value_usd / totalValue) * 100;
+              const percentage = item.value_usd ? (item.value_usd / totalValue) * 100 : 0;
               return (
                 <tr key={item.asset} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -166,16 +166,22 @@ export default function AssetTable({ totals, totalValue }: AssetTableProps) {
                     })}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
-                    ${item.price_usd.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })}
+                    {item.price_usd !== null
+                      ? `$${item.price_usd.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })}`
+                      : 'N/A'
+                    }
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                    ${item.value_usd.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })}
+                    {item.value_usd !== null
+                      ? `$${item.value_usd.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })}`
+                      : 'N/A'
+                    }
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <div className="flex items-center justify-end gap-2">

@@ -1,0 +1,61 @@
+# Public blockchain configurations
+# This file contains reusable blockchain configuration and can be committed to git
+# User-specific wallet addresses should go in wallets.yaml (gitignored)
+
+chains:
+  ethereum_mainnet:
+    chain_id: 1
+    explorer_api: https://api.etherscan.io/v2/api
+    rpc_url: https://mainnet.infura.io/v3/{INFURA_API_KEY}
+    native_token: ETH
+    decimals: 18
+    common_tokens:
+      USDT:
+        address: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        decimals: 6
+      USDC:
+        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        decimals: 6
+      DAI:
+        address: "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+        decimals: 18
+
+  arbitrum_mainnet:
+    chain_id: 42161
+    explorer_api: https://api.arbiscan.io/api
+    rpc_url: https://arb1.arbitrum.io/rpc
+    native_token: ETH
+    decimals: 18
+    common_tokens:
+      USDC:
+        address: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+        decimals: 6
+      USDT:
+        address: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+        decimals: 6
+      ARB:
+        address: "0x912CE59144191C1204E64559FE8253a0e49E6548"
+        decimals: 18
+
+  hyperevm_mainnet:
+    chain_id: 999
+    explorer_api: https://explorer.hyperliquid.xyz/api
+    rpc_url: https://rpc.hyperliquid.xyz
+    native_token: HYPE
+    decimals: 18
+    common_tokens:
+      "USD₮0":
+        address: "0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb"
+        decimals: 6
+      SWAP:
+        address: "0x03832767BDf9A8EF007449942125Ad605aCfADb8"
+        decimals: 18
+      USDHL:
+        address: "0xb50A96253aBDF803D85efcDce07Ad8becBc52BD5"
+        decimals: 6
+
+  bitcoin:
+    chain_id: 0
+    explorer_api: https://blockstream.info/api
+    native_token: BTC
+    decimals: 8

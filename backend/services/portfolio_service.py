@@ -1,22 +1,33 @@
 from models import SessionLocal
 from repositories import SnapshotRepository
-import yaml
 from connectors import EtherscanConnector, BlockstreamConnector, BinanceConnector, CoinGeckoConnector
+from config.config_manager import ConfigManager
 from collections import defaultdict
 
+
 class PortfolioService:
-    def __init__(self, connectors=None, config_path="config/assets.yaml"):
+    def __init__(self, connectors=None, config_manager: ConfigManager = None):
+        """
+        Initialize PortfolioService with dependency injection
+
+        Args:
+            connectors: Optional list of connector instances
+            config_manager: Optional ConfigManager instance
+        """
         self.db = SessionLocal()
         self.repo = SnapshotRepository(self.db)
 
-        with open(config_path, "r") as f:
-            self.config = yaml.safe_load(f)
-        self.asset_map = self.config.get("asset_map", {})
-        
+        # Use provided ConfigManager or create new one
+        self.config_manager = config_manager or ConfigManager()
+
+        # Get asset map from ConfigManager
+        self.asset_map = self.config_manager.assets.get("asset_map", {})
+
+        # Initialize connectors with shared ConfigManager
         self.connectors = connectors or [
-            EtherscanConnector(),
-            BlockstreamConnector(),
-            BinanceConnector()
+            EtherscanConnector(config_manager=self.config_manager),
+            BlockstreamConnector(config_manager=self.config_manager),
+            BinanceConnector(config_manager=self.config_manager)
         ]
 
         self.coingecko = CoinGeckoConnector()

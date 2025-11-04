@@ -4,7 +4,7 @@ from services import PortfolioService
 from models import Balance, TotalsResponse, SnapshotModel
 from fastapi.middleware.cors import CORSMiddleware
 
-# python -m uvicorn app.main:app --reload
+# python -m uvicorn main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 
 # CORS Management

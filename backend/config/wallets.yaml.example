@@ -1,0 +1,25 @@
+# User wallet addresses (PRIVATE - keep this file secure!)
+# Copy this file to wallets.yaml and add your actual addresses
+# Chain configurations are in chains.yaml
+
+wallets:
+  # Ethereum Mainnet addresses
+  ethereum_mainnet:
+    - "0xYourEthereumAddress1"
+    - "0xYourEthereumAddress2"
+
+  # Arbitrum One addresses
+  arbitrum_mainnet:
+    - "0xYourArbitrumAddress"
+
+  # HyperEVM addresses
+  hyperevm_mainnet:
+    - "0xYourHyperEVMAddress"
+
+  # Bitcoin addresses
+  bitcoin:
+    - "bc1YourBitcoinAddress1"
+    - "bc1YourBitcoinAddress2"
+
+# Add more chains as needed
+# Available chains are defined in chains.yaml
