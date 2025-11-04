@@ -102,6 +102,14 @@ CHAINSTACK_API_KEY=your_chainstack_api_key_here
 
 # Database configuration
 SQLALCHEMY_DATABASE_URL=sqlite:///./data/portfolio.db
+
+# CORS configuration (comma-separated origins)
+CORS_ORIGINS=http://localhost:3000
+```
+
+**For production deployment**, add your domain to CORS_ORIGINS:
+```bash
+CORS_ORIGINS=http://localhost:3000,https://yourdomain.com,https://www.yourdomain.com
 ```
 
 **Where to get API keys:**

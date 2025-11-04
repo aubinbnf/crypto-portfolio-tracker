@@ -1,20 +1,30 @@
+import os
 from fastapi import FastAPI
 from typing import List
 from services import PortfolioService
 from models import Balance, TotalsResponse, SnapshotModel
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # python -m uvicorn main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 
-# CORS Management
+# CORS Management - configurable via environment variable
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+# Split by comma and strip whitespace from each origin
+allowed_origins = [origin.strip() for origin in cors_origins.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+print(f"CORS enabled for origins: {', '.join(allowed_origins)}")
 
 service = PortfolioService()
 
