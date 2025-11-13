@@ -120,12 +120,6 @@ CORS_ORIGINS=http://localhost:3000,https://yourdomain.com,https://www.yourdomain
 - **Etherscan API**: https://etherscan.io/myapikey
   - Free tier: 5 requests/second
 
-- **Infura**: https://app.infura.io/
-  - Free tier: 100,000 requests/day
-
-- **Chainstack**: https://console.chainstack.com/
-  - Alternative RPC provider
-
 **Configure wallet addresses:**
 
 ```bash

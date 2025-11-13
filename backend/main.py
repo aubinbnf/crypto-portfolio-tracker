@@ -5,15 +5,20 @@ from services import PortfolioService
 from models import Balance, TotalsResponse, SnapshotModel
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from models.db import Base, engine
 
 load_dotenv()
 
 # python -m uvicorn main:app --reload
 app = FastAPI(title="Crypto Portfolio API", version="0.1.0")
 
-# CORS Management - configurable via environment variable
+@app.on_event("startup")
+def startup_db():
+    Base.metadata.create_all(bind=engine)
+    print("Database tables created")
+
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000")
-# Split by comma and strip whitespace from each origin
+
 allowed_origins = [origin.strip() for origin in cors_origins.split(",")]
 
 app.add_middleware(

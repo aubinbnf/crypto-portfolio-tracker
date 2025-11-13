@@ -28,6 +28,20 @@ services:
       - backend
     command: npm run dev
 
+  postgres:
+    image: postgres:15
+    container_name: portfolio-postgres
+    environment:
+      - POSTGRES_USER=portfolio_user
+      - POSTGRES_PASSWORD=portfolio_password
+      - POSTGRES_DB=portfolio_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
   portfolio-data:
+    driver: local
+  postgres_data:
     driver: local
