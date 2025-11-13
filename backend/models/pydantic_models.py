@@ -33,4 +33,4 @@ class SnapshotModel(BaseModel):
     items: List[SnapshotItemModel]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
