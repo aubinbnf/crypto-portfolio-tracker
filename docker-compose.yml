@@ -9,9 +9,6 @@ services:
       - ./backend/.env
     environment:
       - ENV=development
-    volumes:
-      - portfolio-data:/app/data
-      - ./backend/data:/app/data
 
   frontend:
     build:
@@ -41,7 +38,5 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  portfolio-data:
-    driver: local
   postgres_data:
     driver: local
